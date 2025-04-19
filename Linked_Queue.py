@@ -33,7 +33,6 @@ class LinkedQueue:
         """Return True if the queue is empty."""
         return self.size == 0
 
-
     # Devuelve el primer elemento (head) sin eliminarlo
     # Consulta cual es el siguiente vuelo sin eliminarlo (?)
     """ obtener el primero """
@@ -43,12 +42,14 @@ class LinkedQueue:
         Raise OwnEmpty if the queue is empty.
         """
         if self.is_empty():
-            raise OwnEmpty("Queue is empty")
+            raise OwnEmpty("No hay vuelos registrados en este momento")
         return self.head.element  # front aligned with head of list
     
     """ obtener el ultimo """
     def last(self):
-        pass
+        if self.is_empty():
+            raise OwnEmpty("No hay vuelos registrados en este momento")
+        return self.tail.element 
 
     # Desencolar
     # Elimina Y devuelve el primer elemento (head)
@@ -60,7 +61,7 @@ class LinkedQueue:
         Raise OwnEmpty if the queue is empty.
         """
         if self.is_empty():
-            raise OwnEmpty("Queue is empty")
+            raise OwnEmpty("No hay vuelos registrados en este momento")
         answer = self.head.element
         self.head = self.head.next
         self.size -= 1
@@ -69,17 +70,22 @@ class LinkedQueue:
         return answer
     
     """ Insertar al frente """
-    def insertar_al_frente(vuelo):
-        pass
+    """ Añade un vuelo al inicio de la lista (para emergencias) """
+    def insertar_al_frente(self, vuelo):
+        newest = self.Node(vuelo, self.head)  # apunta al nodo actual que era el primero
+        self.head = newest               # ahora el nuevo nodo es el primero
+        if self.is_empty():
+            self.tail = newest           # si estaba vacía, head y tail son iguales
+        self.size += 1
 
     # Encolar
     # Agrega un elemento al final de la cola (?)
     # Inserta nuevos vuelos
     """ Insertar al final """
     """ añade un vuelo al final de la lista (vuelos regulares) """
-    def enqueue(self, e):
+    def enqueue(self, vuelo):
         """Add an element to the back of the queue."""
-        newest = self.Node(e, None)  # node will become the new tail
+        newest = self.Node(vuelo, None)  # node will become the new tail
         if self.is_empty():
             self.head = newest  # special case: queue was empty
         else:
@@ -91,7 +97,7 @@ class LinkedQueue:
     def insertar_en_posicion(self, vuelo, posicion):
         # Valida que la posicion asignada no este fuera de rango
         if posicion < 0 or posicion > self.size:
-            raise IndexError("Posición fuera de rango")
+            raise IndexError("Posición de vuelo fuera de rango")
 
         nuevo_nodo = self.Node(vuelo)
 
@@ -121,9 +127,9 @@ class LinkedQueue:
     """ Extraer de posicion """
     def extraer_de_posicion(self, posicion):
         if self.is_empty():
-            raise Exception("Queue is empty")
+            raise Exception("No hay vuelos registrados en este moment")
         if posicion < 0 or posicion >= self.size:
-            raise IndexError("Posición fuera de rango")
+            raise IndexError("Posición de vuelo fuera de rango")
 
         # En caso que sea el primer elemento el que se extrae
         if posicion == 0:
