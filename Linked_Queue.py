@@ -45,6 +45,10 @@ class LinkedQueue:
         if self.is_empty():
             raise OwnEmpty("Queue is empty")
         return self.head.element  # front aligned with head of list
+    
+    """ obtener el ultimo """
+    def last(self):
+        pass
 
     # Desencolar
     # Elimina Y devuelve el primer elemento (head)
@@ -63,6 +67,10 @@ class LinkedQueue:
         if self.is_empty():  # special case: queue is now empty
             self.tail = None  # the removed node was also the tail
         return answer
+    
+    """ Insertar al frente """
+    def insertar_al_frente(vuelo):
+        pass
 
     # Encolar
     # Agrega un elemento al final de la cola (?)
@@ -78,3 +86,63 @@ class LinkedQueue:
             self.tail.next = newest
         self.tail = newest  # update reference to the new tail
         self.size += 1
+
+    """ Insertar en posicion """
+    def insertar_en_posicion(self, vuelo, posicion):
+        # Valida que la posicion asignada no este fuera de rango
+        if posicion < 0 or posicion > self.size:
+            raise IndexError("Posición fuera de rango")
+
+        nuevo_nodo = self.Node(vuelo)
+
+        # En caso que se quiera insertar en la primera posicion o en posicion cero
+        # En ese caso se actualiza head
+        if posicion == 0:
+            nuevo_nodo.next = self.head
+            self.head = nuevo_nodo
+            if self.size == 0:
+                self.tail = nuevo_nodo
+
+        # Caso general para insertar en cualquier posicion que no sea la primera o la ultima
+        else:
+            actual = self.head
+            for _ in range(posicion - 1):  # Avanzar hasta el nodo anterior a la posición
+                actual = actual.next
+            nuevo_nodo.next = actual.next
+            actual.next = nuevo_nodo
+
+            # En el caso de que se inserte al final
+            # Entonces se actualiza tail
+            if nuevo_nodo.next is None:
+                self.tail = nuevo_nodo
+
+        self.size += 1
+
+    """ Extraer de posicion """
+    def extraer_de_posicion(self, posicion):
+        if self.is_empty():
+            raise Exception("Queue is empty")
+        if posicion < 0 or posicion >= self.size:
+            raise IndexError("Posición fuera de rango")
+
+        # En caso que sea el primer elemento el que se extrae
+        if posicion == 0:
+            eliminado = self.head
+            self.head = self.head.next
+            if self.head is None:  # Si la cola queda vacía, actualizamos tail
+                self.tail = None
+
+        # Extrae cualquier posicion que no sea el inicio o final
+        else:
+            actual = self.head
+            for _ in range(posicion - 1):
+                actual = actual.next
+            eliminado = actual.next
+            actual.next = eliminado.next
+
+            # Si es el el último nodo el que se elimina, se actualiza tail
+            if eliminado.next is None:
+                self.tail = actual
+
+        self.size -= 1
+        return eliminado.element

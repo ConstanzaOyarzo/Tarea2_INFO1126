@@ -14,8 +14,6 @@ class EstadoVuelo(enum.Enum):
 class Vuelo(Base):
     __tablename__ = "vuelos"
 
-    # id y codigo?
-    
     id = Column(Integer, primary_key=True, index=True)
     codigo = Column(String, unique=True, nullable=False)  # ej: "AV2025"
     estado = Column(Enum(EstadoVuelo), default=EstadoVuelo.programado)
