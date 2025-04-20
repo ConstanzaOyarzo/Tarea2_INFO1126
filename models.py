@@ -14,9 +14,9 @@ class EstadoVuelo(enum.Enum):
 class Vuelo(Base):
     __tablename__ = "vuelos"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True, autoincrement=True)
     codigo = Column(String, unique=True, nullable=False)  # ej: "AV2025"
     estado = Column(Enum(EstadoVuelo), default=EstadoVuelo.programado)
-    hora = Column(DateTime, default=datetime.datetime.utcnow)
+    hora = Column(DateTime, default=datetime.utcnow)
     origen = Column(String, nullable=False)
     destino = Column(String, nullable=False)

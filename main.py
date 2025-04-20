@@ -9,6 +9,7 @@ app = FastAPI()
 lista_vuelos = LinkedQueue() # Instancia de Lista Vuelos
 
 class VueloCreate(BaseModel):
+    id: int
     codigo: str
     estado: Optional[EstadoVuelo] = EstadoVuelo.programado
     origen: str
@@ -19,7 +20,7 @@ class VueloOut(VueloCreate):
     id: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 """ POST /vuelos """
 @app.post("/vuelos", response_model=VueloOut)
