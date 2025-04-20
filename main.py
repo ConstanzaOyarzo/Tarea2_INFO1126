@@ -64,10 +64,13 @@ def extraer_vuelo(posicion: int):
 """ GET /vuelos/lista """
 @app.get("/vuelos/lista", response_model=List[VueloOut])
 def listar_vuelos():
-    return lista_vuelos.to_list()  # método que devuelva los vuelos como lista
+    return lista_vuelos.obtener_lista()  # método que devuelva los vuelos como lista
 
 """ PATCH /vuelos/reordenar """
 @app.patch("/vuelos/reordenar")
-def reordenar_manual(nueva_lista: List[VueloCreate]):
-    lista_vuelos.reordenar(nueva_lista)  # método que reconstruye la cola
-    return {"mensaje": "Cola reordenada"}
+def reordenar_vuelos():
+    if lista_vuelos.is_empty():
+        raise HTTPException(status_code=404, detail="No hay vuelos en la cola")
+
+    lista_vuelos.reordenar()  # Usa la lógica de prioridad: emergencia → retrasado → programado
+    return lista_vuelos.obtener_lista()

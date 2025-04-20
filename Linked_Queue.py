@@ -152,3 +152,26 @@ class LinkedQueue:
 
         self.size -= 1
         return eliminado.element
+    
+    def obtener_lista(self):
+        vuelos = []
+        actual = self.head
+        while actual:
+            vuelos.append(actual.element)
+            actual = actual.next
+        return vuelos
+    
+    # reordenar por prioridad
+    def reordenar(self):
+        prioridad_estado = {
+            "emergencia": 1,
+            "retrasado": 2,
+            "programado": 3
+        }
+        vuelos = self.obtener_lista()
+        
+        vuelos.sort(key=lambda v: (prioridad_estado[v.estado.value], v.hora))
+        
+        self.clear()  # Vacía la cola actual
+        for vuelo in vuelos:
+            self.enqueue(vuelo)  # Reinserta en el nuevo orden
